@@ -92,7 +92,7 @@ service mariadb start || service mysql start
 mysql -e "create database IF NOT EXISTS test;" -uroot
 
 # ldap
-sed -e 's/cn=admin,dc=nodomain/'$(/usr/sbin/slapcat|grep ^dn:|awk '{print $2}')'/' -i .github/NPTest.cache
+./npcache_accessor.pl set "NP_LDAP_BASE_DN" "$(/usr/sbin/slapcat | grep ^dn: | awk '{print $2}')"
 service slapd start
 
 # sshd
@@ -127,7 +127,7 @@ service postfix start
 service vsftpd start
 
 # hostname
-sed "/NP_HOST_TLS_CERT/s/.*/'NP_HOST_TLS_CERT' => '$(hostname)',/" -i /src/.github/NPTest.cache
+./npcache_accessor.pl set "NP_HOST_TLS_CERT" "$(hostname)"
 
 # create some test files to lower inodes
 for i in $(seq 10); do
