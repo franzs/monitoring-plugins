@@ -92,6 +92,7 @@ service mariadb start || service mysql start
 mysql -e "create database IF NOT EXISTS test;" -uroot
 
 # ldap
+/usr/sbin/slapcat
 ./npcache_accessor.pl set "NP_LDAP_BASE_DN" "$(/usr/sbin/slapcat | grep ^dn: | awk '{print $2}')"
 service slapd start
 
